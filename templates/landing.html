@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TerraLogic Pro | The Digital Agronomist</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-container": "#9cc49d",
+              "on-secondary": "#ffffff",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#b7ccbc",
+              "on-primary": "#ffffff",
+              "on-surface": "#171d17",
+              "tertiary": "#705d00",
+              "on-tertiary-fixed": "#221b00",
+              "on-secondary-container": "#56695b",
+              "on-error-container": "#93000a",
+              "background": "#f4fbf2",
+              "error": "#ba1a1a",
+              "surface": "#f4fbf2",
+              "inverse-primary": "#a8d1a9",
+              "surface-dim": "#d5dcd3",
+              "outline": "#727970",
+              "on-tertiary-fixed-variant": "#554600",
+              "outline-variant": "#c2c8be",
+              "on-secondary-fixed-variant": "#384b3f",
+              "primary-fixed-dim": "#a8d1a9",
+              "secondary-container": "#d2e8d7",
+              "secondary-fixed": "#d2e8d7",
+              "surface-container-highest": "#dde4db",
+              "tertiary-fixed": "#ffe171",
+              "on-error": "#ffffff",
+              "on-tertiary-container": "#4c3e00",
+              "on-tertiary": "#ffffff",
+              "on-secondary-fixed": "#0d1f15",
+              "on-primary-fixed": "#002109",
+              "surface-bright": "#f4fbf2",
+              "on-background": "#171d17",
+              "tertiary-fixed-dim": "#e9c400",
+              "primary-container": "#2e5233",
+              "on-surface-variant": "#424841",
+              "on-primary-fixed-variant": "#2b4e30",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#eff6ec",
+              "surface-container-high": "#e3eae1",
+              "inverse-surface": "#2b322c",
+              "surface-container": "#e9f0e6",
+              "primary": "#173b1e",
+              "surface-tint": "#426746",
+              "tertiary-container": "#caa900",
+              "inverse-on-surface": "#ecf3e9",
+              "surface-variant": "#dde4db",
+              "secondary": "#506356",
+              "primary-fixed": "#c3edc3"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.5rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(16px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .dark-glass {
+        background: rgba(23, 29, 23, 0.8);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .gradient-primary {
+        background: linear-gradient(135deg, #173b1e 0%, #2e5233 100%);
+      }
+      .text-balance { text-wrap: balance; }
+      .letter-spacing-tightest { letter-spacing: -0.05em; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim antialiased">
+<nav class="fixed top-0 w-full z-[100] transition-all duration-300">
+    <div class="max-w-screen-2xl mx-auto px-8 py-6">
+        <div class="glass-card rounded-full px-8 py-3 flex justify-between items-center shadow-sm">
+            <div class="text-xl font-extrabold text-primary tracking-tighter font-headline flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                TerraLogic Pro
+            </div>
+            <div class="hidden md:flex gap-10 items-center font-headline font-semibold text-sm tracking-wide">
+                <a class="text-on-surface/70 hover:text-primary transition-colors" href="/login">Platform</a>
+                <a class="text-on-surface/70 hover:text-primary transition-colors" href="/login">ML Insights</a>
+            </div>
+            <div class="flex items-center gap-3 font-headline font-bold text-sm">
+                <button onclick="location.href='/login'" class="text-primary px-4 py-2 hover:opacity-70 transition-all">Login</button>
+                <button onclick="location.href='/login'" class="gradient-primary text-white px-6 py-2.5 rounded-full shadow-lg shadow-primary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all">Start Onboarding</button>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+    <section class="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img alt="Field" class="w-full h-full object-cover brightness-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5KX1toZCk9GnyT_AVMnBku4a-BWoQlgKqAx2ssDjQ5e1MIXPlLl8jGc2XiD98R5-ze01bYO8Ok5DwHpPWB-vjguuTW1mP3LYs8-TcOjgxBhZR0NWSzDsmX6WhzwvQHtTvZLsfrp3rXp-6p1JDWUGqt9n20v3ual8HQ6k3n5E5sAwNWpxC4-ksCFyqStav8RepkZonQWulgYYzhU7NJ1rr_3NQ7mwDdOYeExSHUusflNYdFv3BwjJ8jcrorA-8Nk5QpkVokKuOFxo"/>
+            <div class="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-8 w-full relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-label text-[10px] font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    Autonomous Farming 2.0
+                </div>
+                <h1 class="text-7xl md:text-[110px] font-headline font-extrabold text-primary leading-[0.85] tracking-tighter mb-10 text-balance">
+                    Where Earth Meets <span class="text-tertiary">Intelligence</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-on-surface-variant/90 max-w-xl mb-12 font-medium leading-relaxed">
+                    Precision agronomy redefined by real-time machine learning. Optimize yield with the world's most sophisticated digital ecosystem.
+                </p>
+                <div class="flex flex-wrap gap-8 items-center">
+                    <button onclick="location.href='/login'" class="gradient-primary text-on-primary px-10 py-5 rounded-full font-headline font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+                        Request Early Access
+                    </button>
+                    <button onclick="location.href='/login'" class="group flex items-center gap-3 text-primary font-headline font-bold text-lg hover:opacity-70 transition-opacity">
+                        <span class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">play_circle</span>
+                        Field-Test Case Study
+                    </button>
+                </div>
+            </div>
+            <div class="lg:col-span-4 hidden lg:block">
+                <div class="glass-card p-8 rounded-3xl shadow-2xl border-white/40 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 rounded-lg bg-tertiary/20 text-tertiary">
+                                <span class="material-symbols-outlined">water_drop</span>
+                            </div>
+                            <span class="font-label text-xs font-bold uppercase tracking-widest text-on-surface-variant">Soil Moisture</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-primary px-2 py-0.5 rounded bg-primary/10">LIVE</span>
+                    </div>
+                    <div class="text-5xl font-headline font-extrabold text-primary tracking-tighter">64.2%</div>
+                    <div class="w-full bg-outline-variant/30 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-tertiary w-[64%] h-full"></div>
+                    </div>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">Optimal moisture levels detected for Organic Maize across 42 sectors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 px-8 relative overflow-hidden bg-surface-container-low">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+                <div class="max-w-2xl">
+                    <h2 class="text-5xl md:text-6xl font-headline font-extrabold text-primary tracking-tighter mb-6">ML Insights Suite</h2>
+                    <p class="text-on-surface-variant font-body text-lg leading-relaxed">We transform millions of biological signals into precise, actionable management directives through our proprietary NDVI modeling.</p>
+                </div>
+                <div class="text-on-surface-variant font-label uppercase tracking-[0.3em] text-[10px] font-black border-l-2 border-tertiary pl-6 py-2">
+                    Biological Signals <br/> Actionable Data
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="group relative aspect-[16/10] rounded-[3xl] overflow-hidden shadow-2xl">
+                    <img alt="Soil macro" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP1EPXn1jXqFW_EGC7CcE4XdYj7i8Sik73kdEDLk-rBdBxPIE4p2jD5xryZjIpNrAtuNTJfYko7gqmSZK5Id1xS_iF78wqUuM-FqJGtigtpSXjOuQRwqJ51rondvWOcVtzPLtQcfGKaButcL-7DDssIdco4qgSeKJr8dRpGTh_YtZi0Fxvnz4Sr4QERk-XLexZuGkpajj7HFTDAeQUzVZ2Fw0SHQ-W-fVf9hjJ6Ik-XjQ5tiJ6Seb2SRZI_m3AacmnhQ43bXfWj8w"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent"></div>
+                    <div class="absolute inset-0 p-12 flex flex-col justify-end">
+                        <div class="glass-card !bg-white/10 p-8 rounded-2xl border-white/10 backdrop-blur-xl">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="text-3xl font-headline font-extrabold text-white mb-2">Crop Recommendation</h3>
+                                    <p class="text-white/70 text-sm max-w-sm">Algorithmic matching of pH and nitrogen levels to suggest high-margin rotations.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-white/10 text-white">
+                                    <span class="material-symbols-outlined text-2xl">psychology</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-4 bg-white/10 rounded-xl border border-white/5">
+                                    <span class="font-bold text-white">Organic Maize</span>
+                                    <span class="text-tertiary-fixed font-black">98% Match</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
+                                    <span class="font-bold text-white/60">Winter Wheat</span>
+                                    <span class="text-white/40">72% Match</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative aspect-[16/10] rounded-[3xl] overflow-hidden shadow-2xl">
+                    <img alt="Harvest" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCzVCC1EmP8LGLrImSbQGQEECHSaxhy__SpIrnvxsycXkSataWVnnL3R8o6FvBwBhOzZP_25talvGKSahdRFT0tJ73ArvzHDmdTuWoSaSKdDmobufJsrzC93__g_u-upDk4eyzISf-DFDMpTB25o5mgAG9SOcpZznK8d6VBeqvzOY7yCTVAz5PbDuJO-a0y8DABAzN191MAr_iVQexEMhnhGCkgjRKF0aj3Mk9Wsed3rUY7LSOt9uYN7T7PXhAel5qkW8nf9xXlWM"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-tertiary/90 via-tertiary/30 to-transparent"></div>
+                    <div class="absolute inset-0 p-12 flex flex-col justify-end">
+                        <div class="glass-card !bg-black/20 p-8 rounded-2xl border-white/10 backdrop-blur-xl">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="text-3xl font-headline font-extrabold text-white mb-2">Yield Prediction</h3>
+                                    <p class="text-white/70 text-sm max-w-sm">NDVI satellite forecasting with 94.2% precision up to six months ahead.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-white/10 text-white">
+                                    <span class="material-symbols-outlined text-2xl">trending_up</span>
+                                </div>
+                            </div>
+                            <div class="h-24 flex items-end gap-2 px-2">
+                                <div class="flex-1 bg-white/20 h-[40%] rounded-lg"></div>
+                                <div class="flex-1 bg-white/30 h-[55%] rounded-lg"></div>
+                                <div class="flex-1 bg-white/40 h-[70%] rounded-lg"></div>
+                                <div class="flex-1 bg-white/60 h-[85%] rounded-lg"></div>
+                                <div class="flex-1 bg-tertiary-fixed h-full rounded-lg relative">
+                                    <span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-black text-tertiary-fixed">+12.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 px-8 bg-primary relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img alt="Lab" class="w-full h-full object-cover opacity-20 scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpIddnbj50_98XMToItKDUfSsg_c61o4uDA9dEYS15ciJu_jkgehtS02o-z0Bb72fcjgDI9YX11ipgemtXkSskZffVNCGyc0F4-Fy0km-BemjNkzwudTZj01Qr77e8Tfgu2TF1xEWk2QZQQXylg7uMBJ3NnGft8BBKLe2YMpg-132dy3u44s5h1TQkCZNHOder8j-HQ9CmGNp34iBu2Kf1qDvmlhBwCJUOJXaocmruXlSmafx_7ZRHRSIJSkAJOPy_aUK0ri6knT8"/>
+        </div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
+            <div>
+                <h2 class="text-5xl md:text-7xl font-headline font-extrabold text-white tracking-tighter mb-12">AI Mission <br/> Control</h2>
+                <div class="space-y-12">
+                    <div class="flex gap-8 group">
+                        <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/20 group-hover:bg-tertiary transition-colors">
+                            <span class="material-symbols-outlined text-3xl">mic</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-headline font-bold text-white mb-3">Voice Interfacing</h4>
+                            <p class="text-on-primary-container text-lg leading-relaxed max-w-sm">Command irrigation, telemetry checks, or biological analysis via encrypted voice while in the field.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-8 group">
+                        <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/20 group-hover:bg-tertiary transition-colors">
+                            <span class="material-symbols-outlined text-3xl">hub</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-headline font-bold text-white mb-3">Granular Edge Compute</h4>
+                            <p class="text-on-primary-container text-lg leading-relaxed max-w-sm">Real-time processing of 1.2M data points per m² for absolute farm precision.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="dark-glass rounded-[3rem] p-10 shadow-2xl space-y-8">
+                    <div class="flex items-center gap-4 mb-10 pb-6 border-b border-white/10">
+                        <div class="w-4 h-4 rounded-full bg-tertiary shadow-[0_0_15px_#705d00] animate-pulse"></div>
+                        <span class="text-xs font-label font-black uppercase tracking-[0.3em] text-white/50">Core Intelligence Active</span>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="flex flex-col items-end">
+                            <div class="bg-primary-container/40 p-5 rounded-3xl rounded-tr-none text-white text-base max-w-[85%] border border-white/10">
+                                "Terra, identify the optimal harvest window for the North Ridge vineyard."
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <div class="bg-white/5 backdrop-blur-md p-6 rounded-3xl rounded-tl-none text-white/90 text-base max-w-[85%] border border-white/20 leading-relaxed font-medium">
+                                <span class="text-tertiary-fixed font-bold block mb-2">TERRA_BOT:</span>
+                                Sugar levels are trending toward 24° Brix. With rain forecasted for Tuesday, I recommend starting harvest in <span class="text-tertiary-fixed font-black">42 hours</span>.
+                            </div>
+                        </div>
+                        <div class="flex gap-2.5 px-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-bounce"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-bounce [animation-delay:0.2s]"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-bounce [animation-delay:0.4s]"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 px-8 bg-background">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-24 text-center">
+                <div class="group">
+                    <div class="text-[120px] font-headline font-extrabold text-primary/10 group-hover:text-tertiary transition-colors duration-500 leading-none mb-4 -tracking-widest">24%</div>
+                    <div class="text-xs font-label font-black uppercase tracking-[0.4em] text-primary mb-4">Yield Increase</div>
+                    <p class="text-on-surface-variant font-medium text-sm max-w-[220px] mx-auto leading-relaxed">Average performance boost across 500+ verified hectares.</p>
+                </div>
+                <div class="group">
+                    <div class="text-[120px] font-headline font-extrabold text-primary/10 group-hover:text-primary transition-colors duration-500 leading-none mb-4 -tracking-widest">40%</div>
+                    <div class="text-xs font-label font-black uppercase tracking-[0.4em] text-primary mb-4">Water Savings</div>
+                    <p class="text-on-surface-variant font-medium text-sm max-w-[220px] mx-auto leading-relaxed">Via precision moisture sensors and algorithmic flow control.</p>
+                </div>
+                <div class="group">
+                    <div class="text-[120px] font-headline font-extrabold text-primary/10 group-hover:text-primary transition-colors duration-500 leading-none mb-4 -tracking-widest">0.8s</div>
+                    <div class="text-xs font-label font-black uppercase tracking-[0.4em] text-primary mb-4">Edge Latency</div>
+                    <p class="text-on-surface-variant font-medium text-sm max-w-[220px] mx-auto leading-relaxed">Real-time local processing for immediate field adjustments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-40 px-8 relative overflow-hidden bg-surface-container-low">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <h2 class="text-6xl md:text-[100px] font-headline font-extrabold text-primary tracking-tighter leading-[0.85] mb-12">Join the <br/> <span class="text-tertiary">Next Harvest</span></h2>
+            <p class="text-2xl text-on-surface-variant mb-16 max-w-2xl mx-auto font-medium leading-relaxed">
+                Secure your acreage in the next generation of scientific agriculture. Currently onboarding enterprise partners.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button onclick="location.href='/login'" class="gradient-primary text-white px-12 py-6 rounded-full font-headline font-extrabold text-xl shadow-2xl hover:-translate-y-1 transition-all w-full sm:w-auto">
+                    Apply for Access
+                </button>
+                <button onclick="location.href='/login'" class="bg-white text-primary px-12 py-6 rounded-full font-headline font-extrabold text-xl border border-outline-variant hover:bg-surface transition-all w-full sm:w-auto">
+                    Request Demo
+                </button>
+            </div>
+        </div>
+        <div class="absolute -bottom-64 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-primary/5 rounded-full blur-[150px] -z-10"></div>
+    </section>
+</main>
+<footer class="bg-primary text-white py-24 px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
+            <div class="md:col-span-5">
+                <div class="text-3xl font-headline font-extrabold tracking-tighter mb-8">TerraLogic Pro</div>
+                <p class="text-on-primary-container text-lg leading-relaxed max-w-sm">
+                    Engineering sustainable growth through the synthesis of earth and algorithm. Building the future of high-yield preservation.
+                </p>
+            </div>
+            <div class="md:col-span-2">
+                <h5 class="font-label text-xs font-black uppercase tracking-[0.3em] text-white/40 mb-8">Platform</h5>
+                <ul class="space-y-4 font-headline font-bold text-sm">
+                    <li><a class="hover:text-tertiary transition-colors" href="/login">Precision Tools</a></li>
+                    <li><a class="hover:text-tertiary transition-colors" href="/login">ML Models</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-2">
+                <h5 class="font-label text-xs font-black uppercase tracking-[0.3em] text-white/40 mb-8">Company</h5>
+                <ul class="space-y-4 font-headline font-bold text-sm">
+                    <li><a class="hover:text-tertiary transition-colors" href="/login">Manifesto</a></li>
+                    <li><a class="hover:text-tertiary transition-colors" href="/login">Governance</a></li>
+                    <li><a class="hover:text-tertiary transition-colors" href="/login">Biosystems</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-3">
+                <h5 class="font-label text-xs font-black uppercase tracking-[0.3em] text-white/40 mb-8">Connect</h5>
+                <div class="flex gap-4">
+                    <a class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="/login">
+                        <span class="material-symbols-outlined">language</span>
+                    </a>
+                    <a class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="/login">
+                        <span class="material-symbols-outlined">share</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="pt-12 border-t border-white/10">
+            <p class="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">
+                © 2024 TerraLogic Pro Systems. All rights reserved. Registered High-Precision Agronomy Provider.
+            </p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

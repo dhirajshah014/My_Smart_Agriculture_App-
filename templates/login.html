@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TerraLogic Pro | Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#f4fbf2",
+              "primary": "#173b1e",
+              "on-primary": "#ffffff",
+              "surface": "#f4fbf2",
+              "on-surface": "#171d17",
+              "surface-container": "#e9f0e6",
+              "surface-container-highest": "#dde4db",
+              "outline": "#727970",
+              "tertiary": "#705d00",
+              "tertiary-fixed": "#ffe171",
+              "primary-fixed-dim": "#a8d1a9",
+              "on-surface-variant": "#424841",
+              "surface-container-low": "#eff6ec",
+              "surface-container-high": "#e3eae1",
+              "surface-variant": "#dde4db",
+              "surface-container-lowest": "#ffffff",
+              "outline-variant": "#c2c8be"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(221, 228, 219, 0.6); backdrop-filter: blur(20px); }
+        .primary-gradient { background: linear-gradient(135deg, #173b1e 0%, #2e5233 100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface flex min-h-screen items-stretch overflow-hidden">
+<!-- Left Side: Visual Inspiration -->
+<section class="hidden md:flex md:w-1/2 relative overflow-hidden bg-primary">
+<img alt="Sustainable farm sunrise" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGNPf9ZyvZFQo4DmBqSkVvTBEehcFTElCjpvHFX0iFRKhkJl5QxjNC1jCLKDn1T-RV0QIjvxLb-WG7-ifraTDS8BQaesrEINZw1WhAYtqjQbHcwDCzlW3_zGoAOcZK27tPKrUjTrIV05vKL1HO_Wq9Vkp1ZAwz9Hlo1R51aVbmLsYz4RKsPIuVBUTqoXr1PzeZtEqwKYRhqY2BMI7nMIBNgBmJs2zn-jx8O2-7MEVi7RKxN3ANi6XJ8is2wHXjIihJGt9ND4u97LI"/>
+<div class="relative z-10 p-16 flex flex-col justify-between w-full h-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full primary-gradient flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-bright" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<span class="font-headline text-2xl font-extrabold tracking-tight text-surface-bright">TerraLogic Pro</span>
+</div>
+<div class="max-w-md">
+<h1 class="font-headline text-5xl font-extrabold text-surface-bright leading-[1.1] tracking-tight mb-6">Cultivating <br/>Intelligence.</h1>
+<p class="text-primary-fixed-dim text-lg leading-relaxed">Harnessing precision data to drive sustainable growth and agricultural excellence across the globe.</p>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-start gap-4 max-w-sm">
+<span class="material-symbols-outlined text-tertiary-fixed text-3xl">psychology</span>
+<div>
+<p class="font-headline font-semibold text-primary leading-tight">Precision ML Insights</p>
+<p class="text-sm text-on-surface-variant mt-1">Real-time analysis of soil moisture and nutrient levels optimized for today's yields.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: Login -->
+<main class="w-full md:w-1/2 bg-surface-container-lowest flex items-center justify-center p-8 md:p-12 lg:p-24 overflow-y-auto">
+<div class="w-full max-w-md">
+<header class="mb-10">
+<h2 class="font-headline text-4xl font-bold tracking-tight text-on-background mb-3">Welcome Back</h2>
+<p class="text-on-surface-variant font-medium">Secure access to your agricultural insights</p>
+</header>
+<form id="loginForm" class="space-y-8">
+<!-- Inputs -->
+<div class="space-y-5">
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-outline font-bold" for="email">Email Address</label>
+<div class="relative">
+<input required class="w-full h-14 bg-surface-variant border-none rounded-xl px-4 pt-1 text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all outline-none" id="email" name="email" placeholder="name@farm.com" type="email"/>
+<span class="material-symbols-outlined absolute right-4 top-4 text-outline">mail</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="font-label text-xs uppercase tracking-widest text-outline font-bold" for="password">Password</label>
+<a class="text-xs font-headline font-bold text-primary hover:underline" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input required class="w-full h-14 bg-surface-variant border-none rounded-xl px-4 pt-1 text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-highest transition-all outline-none" id="password" name="password" placeholder="••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-4 top-4 text-outline">visibility_off</span>
+</div>
+</div>
+</div>
+<button class="w-full h-14 rounded-full primary-gradient text-on-primary font-headline font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all" type="submit">Sign In</button>
+</form>
+<footer class="mt-12 pt-10 text-center border-t border-outline-variant/30">
+<p class="text-on-surface-variant font-medium">Don't have an account? <a class="text-primary font-headline font-bold ml-1 hover:underline" href="/signup">Sign Up</a></p>
+</footer>
+</div>
+</main>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+        };
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+            // Redirect based on role
+            if (result.user && result.user.role === 'admin') {
+                window.location.href = '/admin';
+            } else if (result.user && result.user.role === 'farmer') {
+                window.location.href = '/dashboard';
+            } else {
+                window.location.href = '/';
+            }
+        } else {
+            alert(result.error || 'Login failed');
+        }
+    });
+</script>
+</body></html>

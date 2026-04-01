@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>System Logs | AgroScientific Pro Admin</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#173b1e",
+                        "secondary": "#506356",
+                        "tertiary": "#705d00",
+                        "surface": "#f4fbf2",
+                        "on-surface": "#171d17",
+                        "surface-container-low": "#eff6ec",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#727970",
+                        "error": "#ba1a1a"
+                    },
+                    fontFamily: {
+                        "manrope": ["Manrope", "sans-serif"],
+                        "inter": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 20px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4fbf2;
+        }
+
+        /* Modern Sidebar Styling */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #506356;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .sidebar-link:hover {
+            background-color: rgba(23, 59, 30, 0.05);
+            color: #173b1e;
+        }
+
+        .sidebar-link.active {
+            background-color: #173b1e;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(23, 59, 30, 0.15);
+        }
+
+        .sidebar-link.active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(23, 59, 30, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+
+<body class="text-on-surface bg-[#f4fbf2] antialiased text-[13px]">
+
+    <!-- Sidebar Navigation -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-[#eff6ec] border-r border-[#173b1e]/10 z-50">
+        <div class="flex flex-col h-full p-6">
+            <!-- Brand Logo -->
+            <div class="mb-10 px-2">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+                        <span class="material-symbols-outlined text-white"
+                            style="font-variation-settings: 'FILL' 1;">Agriculture</span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h1 class="font-manrope font-extrabold text-primary text-lg leading-none tracking-tight">
+                            TerraLogic</h1>
+                        <p class="text-[9px] uppercase tracking-widest text-primary/50 font-black mt-1">Admin Control
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="flex-1 space-y-1">
+                <a class="sidebar-link" href="{{ url_for('admin') }}">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Command Center</span>
+                </a>
+                <a class="sidebar-link" href="{{ url_for('admin_workbench') }}">
+                    <span class="material-symbols-outlined">model_training</span>
+                    <span>Model Workbench</span>
+                </a>
+                <a class="sidebar-link" href="{{ url_for('admin_datasets') }}">
+                    <span class="material-symbols-outlined">database</span>
+                    <span>Datasets</span>
+                </a>
+                <a class="sidebar-link active" href="{{ url_for('admin_logs') }}">
+                    <span class="material-symbols-outlined">terminal</span>
+                    <span>System Logs</span>
+                </a>
+            </nav>
+
+            <!-- Bottom Section -->
+            <div class="mt-auto pt-6 border-t border-primary/10">
+                <div class="bg-white/40 rounded-2xl p-4 border border-primary/5 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full border border-primary/10 bg-primary/5 p-0.5 overflow-hidden">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+                                class="w-full h-full rounded-full" alt="Profile">
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[11px] font-bold text-primary truncate leading-none mb-1">{{
+                                session.get('user_name', 'Super Admin') }}</p>
+                            <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-tight">Administrator</p>
+                        </div>
+                    </div>
+                    <a href="/api/market/logout"
+                        class="flex items-center justify-center gap-2 w-full py-2 bg-white hover:bg-zinc-50 text-zinc-600 border border-zinc-100 rounded-xl text-[10px] font-bold transition-all uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-sm">logout</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="md:ml-64 min-h-screen">
+        <!-- Header -->
+        <header
+            class="w-full sticky top-0 z-40 bg-[#f4fbf2]/80 backdrop-blur-md flex justify-between items-center px-8 py-4 border-b border-primary/5">
+            <div class="flex items-center gap-4">
+                <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary/40">
+                    <span>Admin</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-primary">System Logs</span>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Status Badge -->
+                <div
+                    class="hidden lg:flex items-center gap-3 px-4 py-2 bg-[#eff6ec] border border-[#173b1e]/10 rounded-full text-[10px] font-bold text-primary">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Kernel Monitoring Active
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-[1600px] mx-auto space-y-8">
+            <div class="flex items-end justify-between border-b border-primary/5 pb-8 mb-8">
+                <div class="space-y-2">
+                    <h2 class="text-4xl font-manrope font-extrabold tracking-tighter text-primary">System Health</h2>
+                    <p class="text-secondary font-medium text-sm">Real-time telemetry and backend diagnostic console.
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div
+                        class="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-[10px] font-bold text-emerald-700 uppercase tracking-widest">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        API Cluster: Stable
+                    </div>
+                    <div
+                        class="flex items-center gap-2 px-4 py-2 bg-zinc-50 border border-zinc-100 rounded-full text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span>
+                        <span id="lastRefreshTime" class="text-[11px] font-bold text-zinc-400 uppercase tracking-tight">Last refresh: 0s ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Stats Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- System Uptime -->
+                <div
+                    class="glass-card p-6 rounded-2xl space-y-4 group hover:scale-[1.02] transition-transform duration-300">
+                    <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">System Uptime</p>
+                    <div class="space-y-1">
+                        <h3 id="uptimeValue" class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">--<span
+                                class="text-2xl text-primary/40">%</span></h3>
+                        <p id="sessionTime" class="text-[11px] font-bold text-secondary">Current session: --</p>
+                    </div>
+                </div>
+
+                <!-- CPU Load -->
+                <div
+                    class="glass-card p-6 rounded-2xl space-y-4 group hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">CPU Load</p>
+                        <span id="cpuValue" class="text-[12px] font-extrabold text-primary tracking-tighter">--%</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
+                            <div id="cpuBar" class="h-full bg-primary transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between text-[9px] font-black text-zinc-400 uppercase tracking-widest">
+                            <span>User</span>
+                            <span>System</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memory Usage -->
+                <div
+                    class="glass-card p-6 rounded-2xl space-y-4 group hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Memory Usage
+                        </p>
+                        <span id="memoryValue" class="text-[12px] font-extrabold text-primary tracking-tighter">--%</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
+                            <div id="memoryBar" class="h-full bg-tertiary transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="text-right text-[9px] font-black text-zinc-400 uppercase tracking-widest italic">
+                            10.8GB / 16.0GB
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Latency & Alerts Row -->
+            <div class="grid grid-cols-12 gap-8 mb-12">
+                <!-- API Latency Monitor -->
+                <div class="col-span-12 lg:col-span-8 glass-card p-8 rounded-2xl space-y-8">
+                    <div class="flex justify-between items-center">
+                        <div class="space-y-1">
+                            <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">API Latency
+                                Monitor</h3>
+                            <p class="text-secondary font-medium text-[11px] uppercase tracking-wider">Response times
+                                for core ML endpoints (ms)</p>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary/80"></span>
+                                <span
+                                    class="text-[9px] font-black text-primary/40 uppercase tracking-widest">/PREDICT_CROP</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                                <span
+                                    class="text-[9px] font-black text-primary/40 uppercase tracking-widest">/PREDICT_YIELD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SVG Chart Mockup -->
+                    <div id="latencyMonitor" class="relative h-64 w-full">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                             <span class="material-symbols-outlined text-4xl animate-pulse">pulse</span>
+                        </div>
+                    </div>
+
+                    <!-- X-Axis Labels -->
+                    <div
+                        class="flex justify-between text-[9px] font-black text-zinc-300 uppercase tracking-widest px-2">
+                        <span>14:00</span><span>14:05</span><span>14:10</span><span>14:15</span><span>14:20</span><span>14:25</span><span>14:30</span>
+                    </div>
+                </div>
+
+                <!-- Active Alerts Sidebar -->
+                <div class="col-span-12 lg:col-span-4 glass-card p-8 rounded-2xl flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xs font-manrope font-extrabold text-primary uppercase tracking-[0.2em]">Active
+                            Alerts</h3>
+                        <span id="alertCount"
+                            class="px-2 py-0.5 bg-error text-white text-[8px] font-black rounded-full uppercase tracking-widest">--
+                            Critical</span>
+                    </div>
+
+                    <div id="alertsList" class="flex-1 space-y-4">
+                        <!-- Dynamic Alerts -->
+                    </div>
+
+                    <button
+                        class="mt-8 w-full py-3 bg-[#eff6ec] hover:bg-primary hover:text-white text-primary text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300">
+                        View Alert History
+                    </button>
+                </div>
+            </div>
+            <!-- DB & Traffic Row -->
+            <div class="grid grid-cols-12 gap-8 mb-12">
+                <!-- Database Health -->
+                <div
+                    class="col-span-12 lg:col-span-4 glass-card p-8 rounded-2xl space-y-8 relative overflow-hidden group">
+                    <span
+                        class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-primary/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">database</span>
+                    <h3 class="text-xs font-manrope font-extrabold text-primary uppercase tracking-[0.2em]">Database
+                        Health</h3>
+
+                    <div class="space-y-6 relative z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-tight">Query
+                                Execution</span>
+                            <span id="queryExecTime" class="text-xl font-manrope font-extrabold text-primary tracking-tighter">--ms</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-tight">Active
+                                Connections</span>
+                            <div class="text-right">
+                                <span id="activeConnCount" class="text-xl font-manrope font-extrabold text-primary tracking-tighter">-- /
+                                    100</span>
+                                <p class="text-[9px] font-bold text-zinc-400 uppercase mt-1">Pool Utilization</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-primary/5 space-y-4">
+                            <div class="flex items-center gap-2 text-emerald-600">
+                                <span class="material-symbols-outlined text-sm">check_circle</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Read Replica Sync:
+                                    OK</span>
+                            </div>
+                            <p class="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter">Last transaction
+                                processed at 14:32:01 UTC</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Traffic Map -->
+                <div class="col-span-12 lg:col-span-8 glass-card p-8 rounded-2xl space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div class="space-y-1">
+                            <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">Request Traffic
+                                Map</h3>
+                            <p class="text-secondary font-medium text-[11px] uppercase tracking-wider">Global origin of
+                                API requests</p>
+                        </div>
+                        <span id="globalLoadVal"
+                            class="px-4 py-2 bg-emerald-50 text-emerald-700 text-[9px] font-black rounded-full uppercase tracking-widest border border-emerald-100">
+                            Global Load: -- REQ/S
+                        </span>
+
+                    </div>
+
+                    <!-- Map Placeholder -->
+                    <div
+                        class="relative w-full h-64 bg-zinc-50 rounded-xl overflow-hidden grayscale opacity-80 border border-primary/5">
+                        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1000&auto=format&fit=crop"
+                            class="w-full h-full object-cover" alt="World Map">
+                        <!-- Map Hotspots -->
+                        <div
+                            class="absolute top-1/3 left-1/4 w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-pulse">
+                        </div>
+                        <div
+                            class="absolute top-1/4 left-1/2 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.8)] animate-pulse">
+                        </div>
+                        <div
+                            class="absolute top-1/2 left-2/3 w-3 h-3 bg-tertiary rounded-full shadow-[0_0_15px_rgba(112,93,0,0.8)] animate-pulse">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live System Logs -->
+            <section class="glass-card rounded-2xl overflow-hidden shadow-xl shadow-primary/5 bg-white">
+                <div class="px-8 py-6 bg-white border-b border-zinc-100 flex justify-between items-center">
+                    <div class="flex items-center gap-6">
+                        <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">Live System Logs
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button id="filterInfo"
+                                class="px-3 py-1 bg-zinc-100 text-zinc-500 text-[9px] font-black rounded uppercase tracking-widest hover:bg-zinc-200 transition-colors">Info</button>
+                            <button id="filterWarn"
+                                class="px-3 py-1 bg-tertiary text-white text-[9px] font-black rounded uppercase tracking-widest shadow-lg shadow-tertiary/20">Warn</button>
+                            <button id="filterError"
+                                class="px-3 py-1 bg-error text-white text-[9px] font-black rounded uppercase tracking-widest shadow-lg shadow-error/20">Error</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="logsFilterBtn"
+                            class="flex items-center gap-2 px-4 py-2 text-zinc-400 hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest">
+                            <span class="material-symbols-outlined text-sm">filter_alt</span> Filter
+                        </button>
+                        <button id="logsExportBtn"
+                            class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all text-[10px] font-black uppercase tracking-widest">
+                            <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr
+                                class="text-[10px] uppercase tracking-widest text-zinc-400 border-b border-zinc-50 font-bold">
+                                <th class="px-8 py-5">Timestamp (UTC)</th>
+                                <th class="px-8 py-5">Level</th>
+                                <th class="px-8 py-5">Module</th>
+                                <th class="px-8 py-5">Message</th>
+                                <th class="px-8 py-5 text-right">Latency</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTable" class="text-[11px] font-manrope font-bold divide-y divide-zinc-50">
+                            <!-- Dynamic System Logs -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-8 border-t border-zinc-100 flex justify-center bg-zinc-50/20">
+                    <button
+                        class="text-[10px] font-black text-primary hover:scale-105 transition-all uppercase tracking-widest flex items-center gap-2">
+                        Load Older Logs
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Floating Console Button -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <button
+            class="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all group overflow-hidden">
+            <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">terminal</span>
+            <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </button>
+    </div>
+    <!-- Scripts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+
+</html>

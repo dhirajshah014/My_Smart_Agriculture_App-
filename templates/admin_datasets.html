@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Datasets | AgroScientific Pro Admin</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#173b1e",
+                        "secondary": "#506356",
+                        "tertiary": "#705d00",
+                        "surface": "#f4fbf2",
+                        "on-surface": "#171d17",
+                        "surface-container-low": "#eff6ec",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#727970",
+                        "error": "#ba1a1a"
+                    },
+                    fontFamily: {
+                        "manrope": ["Manrope", "sans-serif"],
+                        "inter": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 20px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4fbf2;
+        }
+
+        /* Modern Sidebar Styling */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #506356;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .sidebar-link:hover {
+            background-color: rgba(23, 59, 30, 0.05);
+            color: #173b1e;
+        }
+
+        .sidebar-link.active {
+            background-color: #173b1e;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(23, 59, 30, 0.15);
+        }
+
+        .sidebar-link.active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(23, 59, 30, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+
+<body class="text-on-surface bg-[#f4fbf2] antialiased text-[13px]">
+
+    <!-- Sidebar Navigation -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-[#eff6ec] border-r border-[#173b1e]/10 z-50">
+        <div class="flex flex-col h-full p-6">
+            <!-- Brand Logo -->
+            <div class="mb-10 px-2">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+                        <span class="material-symbols-outlined text-white"
+                            style="font-variation-settings: 'FILL' 1;">Agriculture</span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h1 class="font-manrope font-extrabold text-primary text-lg leading-none tracking-tight">
+                            TerraLogic</h1>
+                        <p class="text-[9px] uppercase tracking-widest text-primary/50 font-black mt-1">Admin Control
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="flex-1 space-y-1">
+                <a class="sidebar-link" href="{{ url_for('admin') }}">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Command Center</span>
+                </a>
+                <a class="sidebar-link" href="{{ url_for('admin_workbench') }}">
+                    <span class="material-symbols-outlined">model_training</span>
+                    <span>Model Workbench</span>
+                </a>
+                <a class="sidebar-link active" href="{{ url_for('admin_datasets') }}">
+                    <span class="material-symbols-outlined">database</span>
+                    <span>Datasets</span>
+                </a>
+                <a class="sidebar-link" href="{{ url_for('admin_logs') }}">
+                    <span class="material-symbols-outlined">terminal</span>
+                    <span>System Logs</span>
+                </a>
+            </nav>
+
+            <!-- Bottom Section -->
+            <div class="mt-auto pt-6 border-t border-primary/10">
+                <div class="bg-white/40 rounded-2xl p-4 border border-primary/5 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-full border border-primary/10 bg-primary/5 p-0.5 overflow-hidden text-center">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+                                class="w-full h-full rounded-full" alt="Profile">
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[11px] font-bold text-primary truncate leading-none mb-1">{{
+                                session.get('user_name', 'Super Admin') }}</p>
+                            <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-tight">Administrator</p>
+                        </div>
+                    </div>
+                    <a href="/api/market/logout"
+                        class="flex items-center justify-center gap-2 w-full py-2 bg-white hover:bg-zinc-50 text-zinc-600 border border-zinc-100 rounded-xl text-[10px] font-bold transition-all uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-sm">logout</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="md:ml-64 min-h-screen">
+        <!-- Header -->
+        <header
+            class="w-full sticky top-0 z-40 bg-[#f4fbf2]/80 backdrop-blur-md flex justify-between items-center px-8 py-4 border-b border-primary/5">
+            <div class="flex items-center gap-4">
+                <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary/40">
+                    <span>Admin</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-primary">Datasets</span>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Status Badge -->
+                <div
+                    class="hidden lg:flex items-center gap-3 px-4 py-2 bg-[#eff6ec] border border-[#173b1e]/10 rounded-full text-[10px] font-bold text-primary">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Data Ingestion Active
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-[1600px] mx-auto space-y-8">
+            <div class="flex items-end justify-between border-b border-primary/5 pb-8 mb-8">
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-4xl font-manrope font-extrabold tracking-tighter text-primary">Data Inventory
+                        </h2>
+                        <span
+                            class="flex items-center gap-1.5 px-3 py-1 bg-white text-[9px] font-black text-tertiary border border-tertiary/10 rounded-full uppercase tracking-widest shadow-sm">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+                            </span>
+                            Live Streaming
+                        </span>
+                    </div>
+                    <p class="text-secondary font-medium text-sm">Real-time telemetry and archival repository health.
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/5 rounded-xl transition-all text-[11px] font-bold uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-lg">filter_list</span> Filter
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/5 rounded-xl transition-all text-[11px] font-bold uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-lg">sort</span> Sort
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stat Cards Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Total Records -->
+                <div
+                    class="glass-card p-6 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                    <span
+                        class="material-symbols-outlined absolute -top-4 -right-4 text-8xl text-primary/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">database</span>
+                    <div class="relative z-10 space-y-4">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Total Records
+                        </p>
+                        <div class="flex items-baseline gap-2">
+                            <h3 id="totalRecords" class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">--</h3>
+                        </div>
+                        <p class="text-[11px] font-bold text-secondary flex items-center gap-1">
+                            Soil Samples Logged
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ML Features -->
+                <div
+                    class="glass-card p-6 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                    <span
+                        class="material-symbols-outlined absolute -top-4 -right-4 text-8xl text-primary/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">analytics</span>
+                    <div class="relative z-10 space-y-4">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">ML Features</p>
+                        <div class="flex items-baseline gap-2">
+                            <h3 id="totalFeatures" class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">--</h3>
+                        </div>
+                        <p class="text-[11px] font-bold text-secondary flex items-center gap-1">
+                            Active Predictors
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Data Freshness -->
+                <div
+                    class="glass-card p-6 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                    <span
+                        class="material-symbols-outlined absolute -top-4 -right-4 text-8xl text-primary/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">bolt</span>
+                    <div class="relative z-10 space-y-4">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Data Freshness
+                        </p>
+                        <div class="flex items-baseline gap-2">
+                            <h3 id="avgLatency" class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">--</h3>
+                        </div>
+                        <p class="text-[11px] font-bold text-secondary flex items-center gap-1">
+                            Avg. Latency
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Storage -->
+                <div
+                    class="glass-card p-6 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                    <span
+                        class="material-symbols-outlined absolute -top-4 -right-4 text-8xl text-primary/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">cloud</span>
+                    <div class="relative z-10 space-y-4">
+                        <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Storage</p>
+                        <div class="flex items-baseline gap-2">
+                            <h3 id="storageUsage" class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">--</h3>
+                        </div>
+                        <p class="text-[11px] font-bold text-secondary flex items-center gap-1">
+                            Quota Utilization
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-12 gap-8">
+                <!-- Dataset Catalog -->
+                <div class="col-span-12 lg:col-span-8 space-y-8">
+                    <div class="glass-card rounded-2xl overflow-hidden h-fit">
+                        <div class="px-8 py-6 flex justify-between items-center bg-white border-b border-primary/5">
+                            <h3
+                                class="text-xl font-manrope font-extrabold text-primary tracking-tight flex items-center gap-2">
+                                Dataset Catalog
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-zinc-400">filter_alt</span>
+                                <span class="material-symbols-outlined text-zinc-400">sort</span>
+                            </div>
+                        </div>
+                        <table class="w-full text-left">
+                            <thead
+                                class="text-[10px] uppercase tracking-widest text-zinc-400 border-b border-zinc-50 font-bold">
+                                <tr>
+                                    <th class="px-8 py-5">Dataset Name</th>
+                                    <th class="px-8 py-5">Source</th>
+                                    <th class="px-8 py-5">Format</th>
+                                    <th class="px-8 py-5 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="datasetCatalog" class="text-[12px] font-manrope font-bold divide-y divide-zinc-50">
+                                <!-- Dynamic Catalog Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quality Health Sidebar -->
+                <div class="col-span-12 lg:col-span-4">
+                    <div class="glass-card p-8 rounded-2xl space-y-8">
+                        <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">Quality Health</h3>
+
+                        <!-- Circular Gauge -->
+                        <div class="flex flex-col items-center justify-center space-y-4 pt-4">
+                            <div class="relative w-40 h-40">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="8"
+                                        fill="transparent" class="text-zinc-100"></circle>
+                                    <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="8"
+                                        fill="transparent" stroke-dasharray="440" stroke-dashoffset="26.4"
+                                        class="text-primary" style="stroke-linecap: round;"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span
+                                        class="text-4xl font-manrope font-extrabold text-primary tracking-tighter">94%</span>
+                                </div>
+                            </div>
+                            <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Global
+                                Integrity Score</p>
+                        </div>
+
+                        <!-- Metrics -->
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-[11px] font-bold uppercase tracking-tight">
+                                    <span class="text-zinc-400">Completeness</span>
+                                    <span class="text-primary">98.2%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary w-[98.2%]"></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-[11px] font-bold uppercase tracking-tight">
+                                    <span class="text-zinc-400">Outliers Detected</span>
+                                    <span class="text-error">2.1k</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-error w-[15%]"></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-[11px] font-bold uppercase tracking-tight">
+                                    <span class="text-zinc-400">Class Balance</span>
+                                    <span class="text-primary">Optimal</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary w-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Chart -->
+                        <div class="space-y-4 pt-4">
+                            <p class="text-[10px] font-extrabold text-primary/40 uppercase tracking-[0.2em]">Crop Type
+                                Distribution</p>
+                            <div class="flex items-end gap-3 h-20">
+                                <div class="flex-1 bg-primary rounded-sm h-[90%] group relative">
+                                    <span
+                                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-tighter text-zinc-400">Corn</span>
+                                </div>
+                                <div class="flex-1 bg-primary/60 rounded-sm h-[60%] group relative">
+                                    <span
+                                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-tighter text-zinc-400">Wheat</span>
+                                </div>
+                                <div class="flex-1 bg-primary/40 rounded-sm h-[45%] group relative">
+                                    <span
+                                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-tighter text-zinc-400">Soy</span>
+                                </div>
+                                <div class="flex-1 bg-primary/20 rounded-sm h-[30%] group relative">
+                                    <span
+                                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-tighter text-zinc-400">Barley</span>
+                                </div>
+                                <div class="flex-1 bg-primary/10 rounded-sm h-[15%] group relative">
+                                    <span
+                                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-tighter text-zinc-400">Rye</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Correlation Heatmap -->
+            <div class="space-y-6">
+                <div class="space-y-1">
+                    <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">Feature Correlation
+                        Heatmap</h3>
+                    <p class="text-secondary font-medium text-[11px] uppercase tracking-wider">Inter-variable dependency
+                        matrix for ML training optimization.</p>
+                </div>
+                <div class="glass-card p-10 rounded-2xl overflow-x-auto">
+                    <div class="min-w-[800px]">
+                        <!-- Heatmap Grid -->
+                        <div class="grid grid-cols-7 gap-1">
+                            <!-- Header Row -->
+                            <div class="h-10"></div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                Humidity</div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                Temp</div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                Nitrogen</div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                Yield</div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                Sunlight</div>
+                            <div
+                                class="h-10 flex items-center justify-center -rotate-45 text-[9px] font-black uppercase text-zinc-400">
+                                PH Level</div>
+
+                            <!-- Row 1 -->
+                            <div class="h-16 flex items-center font-black text-[9px] uppercase text-zinc-400 pr-4">
+                                Humidity</div>
+                            <div
+                                class="h-16 bg-[#173b1e] rounded flex items-center justify-center text-white font-black">
+                                1.0</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/10 rounded flex items-center justify-center text-primary font-black">
+                                0.43</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/5 rounded flex items-center justify-center text-primary font-black">
+                                0.18</div>
+                            <div
+                                class="h-16 bg-[#506356]/40 rounded flex items-center justify-center text-primary font-black">
+                                0.65</div>
+                            <div
+                                class="h-16 bg-red-50 rounded flex items-center justify-center text-red-400 font-black">
+                                -0.24</div>
+                            <div
+                                class="h-16 bg-zinc-50 rounded flex items-center justify-center text-zinc-300 font-black">
+                                0.05</div>
+
+                            <!-- Row 2 -->
+                            <div class="h-16 flex items-center font-black text-[9px] uppercase text-zinc-400 pr-4">Temp
+                            </div>
+                            <div
+                                class="h-16 bg-[#173b1e]/10 rounded flex items-center justify-center text-primary font-black">
+                                0.43</div>
+                            <div
+                                class="h-16 bg-[#173b1e] rounded flex items-center justify-center text-white font-black">
+                                1.0</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/5 rounded flex items-center justify-center text-primary font-black">
+                                0.22</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/60 rounded flex items-center justify-center text-white font-black">
+                                0.82</div>
+                            <div
+                                class="h-16 bg-[#705d00]/30 rounded flex items-center justify-center text-tertiary font-black">
+                                0.72</div>
+                            <div
+                                class="h-16 bg-zinc-50 rounded flex items-center justify-center text-zinc-300 font-black">
+                                0.11</div>
+
+                            <!-- Row 3 -->
+                            <div class="h-16 flex items-center font-black text-[9px] uppercase text-zinc-400 pr-4">
+                                Nitrogen</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/5 rounded flex items-center justify-center text-primary font-black">
+                                0.18</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/5 rounded flex items-center justify-center text-primary font-black">
+                                0.22</div>
+                            <div
+                                class="h-16 bg-[#173b1e] rounded flex items-center justify-center text-white font-black">
+                                1.0</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/30 rounded flex items-center justify-center text-primary font-black">
+                                0.54</div>
+                            <div
+                                class="h-16 bg-zinc-50 rounded flex items-center justify-center text-zinc-300 font-black">
+                                0.08</div>
+                            <div
+                                class="h-16 bg-[#173b1e]/90 rounded flex items-center justify-center text-white font-black">
+                                0.94</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingestion Pipelines -->
+            <div class="space-y-6 pt-4">
+                <h3 class="text-xl font-manrope font-extrabold text-primary tracking-tight">Ingestion Pipelines</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stream 704 -->
+                    <div class="glass-card p-6 rounded-2xl space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[9px] font-black uppercase text-zinc-400 tracking-widest">Stream
+                                #704</span>
+                            <span
+                                class="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black rounded-full uppercase tracking-widest">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Active
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-zinc-50 border border-primary/5 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-zinc-400">cloud_queue</span>
+                            </div>
+                            <div>
+                                <h4 class="text-[12px] font-extrabold text-primary uppercase">Weather-Grid API</h4>
+                                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-tighter">AWS us-east-1
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-between items-center text-[10px] font-black text-primary uppercase tracking-tighter pt-4 border-t border-primary/5">
+                            <span class="text-zinc-400">Throughput</span>
+                            <span>12.4 MB/s</span>
+                        </div>
+                    </div>
+
+                    <!-- Stream 705 -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-tertiary space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[9px] font-black uppercase text-zinc-400 tracking-widest">Stream
+                                #705</span>
+                            <span
+                                class="flex items-center gap-1.5 px-2 py-0.5 bg-tertiary/10 text-tertiary text-[8px] font-black rounded-full uppercase tracking-widest">
+                                <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> Processing
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-tertiary/5 border border-tertiary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-tertiary">sensors</span>
+                            </div>
+                            <div>
+                                <h4 class="text-[12px] font-extrabold text-primary uppercase">Field IoT Cluster B</h4>
+                                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-tighter">Gateway:
+                                    192.168.1.44</p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-between items-center text-[10px] font-black text-primary uppercase tracking-tighter pt-4 border-t border-primary/5">
+                            <span class="text-zinc-400">Throughput</span>
+                            <span>840 KB/s</span>
+                        </div>
+                    </div>
+
+                    <!-- Stream 709 -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-error space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[9px] font-black uppercase text-zinc-400 tracking-widest">Stream
+                                #709</span>
+                            <span
+                                class="flex items-center gap-1.5 px-2 py-0.5 bg-error/10 text-error text-[8px] font-black rounded-full uppercase tracking-widest">
+                                <span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span> Retrying
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-error/5 border border-error/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-error">sync_problem</span>
+                            </div>
+                            <div>
+                                <h4 class="text-[12px] font-extrabold text-primary uppercase">ESA Sentinel Sync</h4>
+                                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-tighter">Auth Error 403
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-between items-center text-[10px] font-black text-primary uppercase tracking-tighter pt-4 border-t border-primary/5">
+                            <span class="text-zinc-400">Throughput</span>
+                            <span>0 KB/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Scripts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+
+</html>

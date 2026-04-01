@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up | Digital Agronomist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-bright": "#f4fbf2",
+                "primary": "#173b1e",
+                "on-primary": "#ffffff",
+                "surface": "#f4fbf2",
+                "on-surface": "#171d17",
+                "surface-container": "#e9f0e6",
+                "surface-container-highest": "#dde4db",
+                "outline": "#727970",
+                "tertiary": "#705d00",
+                "tertiary-fixed": "#ffe171",
+                "primary-fixed-dim": "#a8d1a9",
+                "on-surface-variant": "#424841",
+                "surface-container-low": "#eff6ec",
+                "surface-container-high": "#e3eae1",
+                "surface-variant": "#dde4db",
+                "surface-container-lowest": "#ffffff",
+                "outline-variant": "#c2c8be"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(221, 228, 219, 0.6); backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<main class="flex-grow flex flex-col md:flex-row">
+<!-- Left Panel -->
+<section class="hidden md:flex md:w-5/12 lg:w-1/2 relative overflow-hidden bg-primary items-center justify-center p-12">
+<div class="absolute inset-0 z-0 opacity-40">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGL0tGprZukSIAct-qrvpCgfihHDKRRaVlQwtNSOKnth8qY53zN715oeUDan7jMg0b4ZCtDGsecrcAEJI5245Mx19nEt1QvNiHtyszm6Bs6ir756OuGt8kX5Gn18J9IOuss3skG_qaUdRJdLzobw0Mpcu8nHeOkUiaauTqbTfyEZokVWaXVmJUu7TMsEN2rUybe7UwRL4Ju0EXRUy6Rq0GZG_O6Vq47q77THARp6D-mNWVv6ef2zWrXpFb04vOTq65su93a54TfaQ"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary via-primary/80 to-transparent z-10"></div>
+<div class="relative z-20 max-w-md">
+<div class="mb-8"><span class="text-primary-fixed font-headline text-3xl font-extrabold tracking-tighter">TerraLogic Pro</span></div>
+<h2 class="text-white font-headline text-5xl font-bold leading-tight mb-6 tracking-tight">Where Earth Meets <span class="text-tertiary-fixed">Intelligence.</span></h2>
+<p class="text-primary-fixed-dim text-lg leading-relaxed mb-10">Join a community of modern agronomists leveraging real-time telemetry and biological data.</p>
+</div>
+</section>
+<!-- Right Panel -->
+<section class="w-full md:w-7/12 lg:w-1/2 bg-surface-bright flex flex-col justify-center items-center px-6 py-12 md:px-16 lg:px-24">
+<div class="w-full max-w-md">
+<div class="mb-10">
+<h1 class="font-headline text-4xl font-bold text-primary tracking-tight mb-2">Join the Harvest</h1>
+<p class="text-on-surface-variant text-lg">Empowering your farm with scientific precision</p>
+</div>
+<form id="signupForm" class="space-y-6">
+<!-- Role Selection -->
+<div class="space-y-3">
+<label class="font-label text-xs font-semibold uppercase tracking-widest text-on-surface-variant">Select Your Role</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="cursor-pointer group">
+<input checked name="role" type="radio" value="farmer" class="peer hidden"/>
+<div class="p-4 rounded-xl bg-surface-container border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-highest transition-all duration-200">
+<div class="flex items-center gap-3 mb-1"><span class="material-symbols-outlined text-primary">agriculture</span><span class="font-bold text-primary">Farmer Account</span></div>
+<p class="text-[10px] text-on-surface-variant font-medium">Access scientific diagnostics</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Inputs -->
+<div class="space-y-4">
+<div class="group">
+<label class="block font-label text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-1 ml-1" for="full_name">Full Name</label>
+<input required class="w-full px-4 py-3 bg-surface-variant border-none rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface-container-highest text-on-surface outline-none" id="full_name" placeholder="Johnathan Miller" type="text"/>
+</div>
+<div class="group">
+<label class="block font-label text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-1 ml-1" for="email">Email Address</label>
+<input required class="w-full px-4 py-3 bg-surface-variant border-none rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface-container-highest text-on-surface outline-none" id="email" placeholder="miller@farm-intelligence.io" type="email"/>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="group">
+<label class="block font-label text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-1 ml-1" for="password">Password</label>
+<input required class="w-full px-4 py-3 bg-surface-variant border-none rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface-container-highest text-on-surface outline-none" id="password" placeholder="••••••••" type="password"/>
+</div>
+<div class="group">
+<label class="block font-label text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-1 ml-1" for="confirm_password">Confirm</label>
+<input required class="w-full px-4 py-3 bg-surface-variant border-none rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface-container-highest text-on-surface outline-none" id="confirm_password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-headline font-bold rounded-full shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200" type="submit">Create Account</button>
+<div class="text-center mt-8">
+<p class="text-on-surface-variant text-sm">Already have an account? <a class="text-primary font-bold hover:underline underline-offset-4" href="/login">Log In</a></p>
+</div>
+</form>
+</div>
+</section>
+</main>
+<script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pwd = document.getElementById('password').value;
+        const confirm = document.getElementById('confirm_password').value;
+        if (pwd !== confirm) { alert('Passwords do not match'); return; }
+        
+        const data = {
+            name: document.getElementById('full_name').value,
+            email: document.getElementById('email').value,
+            password: pwd,
+            role: document.querySelector('input[name="role"]:checked').value
+        };
+        const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+            window.location.href = '/login';
+        } else {
+            alert(result.error || 'Signup failed');
+        }
+    });
+</script>
+</body></html>

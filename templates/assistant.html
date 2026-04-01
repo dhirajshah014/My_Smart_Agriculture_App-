@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI Assistant | AgroScientific</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#173b1e",
+                  "secondary": "#506356",
+                  "tertiary": "#705d00",
+                  "surface": "#f4fbf2",
+                  "surface-container-low": "#eff6ec",
+                  "surface-variant": "#dde4db"
+                },
+                fontFamily: { "headline": ["Manrope"], "body": ["Inter"] },
+              },
+            },
+          }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(221, 228, 219, 0.6); backdrop-filter: blur(20px); }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.99); }
+        }
+        .animate-pulse-subtle { animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex">
+    <aside class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-surface-container-low border-r border-primary/15 z-50">
+        <div class="flex flex-col gap-2 p-6 h-full">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white"><span class="material-symbols-outlined">psychology</span></div>
+                <div>
+                    <h1 class="font-headline font-bold text-primary text-lg leading-tight">AgroAssistant</h1>
+                    <p class="text-[10px] text-primary/60 uppercase tracking-widest font-bold">AI Support</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/dashboard"><span class="material-symbols-outlined">home</span><span class="text-sm font-medium">Home</span></a>
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/predict"><span class="material-symbols-outlined">psychology</span><span class="text-sm font-medium">Crop Prediction</span></a>
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/yield"><span class="material-symbols-outlined">bar_chart</span><span class="text-sm font-medium">Yield Prediction</span></a>
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/disease"><span class="material-symbols-outlined">center_focus_weak</span><span class="text-sm font-medium">Disease Detection</span></a>
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/advisory">
+                    <span class="material-symbols-outlined">psychology</span>
+                    <span class="text-sm font-medium">Farmer Advisory</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-surface-variant/50 transition-all rounded-lg" href="/assistant"><span class="material-symbols-outlined">chat_bubble</span><span class="text-sm font-medium">Chatbot</span></a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="flex-1 md:ml-64 flex flex-col h-screen relative">
+        <header class="w-full sticky top-0 z-40 bg-[#f4fbf2] flex border-b border-primary/5 shadow-sm justify-between items-center px-8 py-4">
+            <div class="flex items-center gap-8">
+                <span class="text-2xl font-headline font-extrabold text-[#173b1e] -tracking-tight uppercase">AgroScientific</span>
+                <nav class="hidden lg:flex gap-8">
+                    <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/dashboard">Home</a>
+                    <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/predict">Crop Prediction</a>
+                    <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/yield">Yield Prediction</a>
+                    <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/disease">Disease Detection</a>
+                    <a class="text-primary border-b-2 border-primary pb-1 text-sm font-bold" href="/assistant">Chatbot</a>
+                    <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/advisory">Farmer Advisory</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4 bg-primary/5 px-4 py-2 rounded-full border border-primary/10">
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary/60">Logged in as</span>
+                    <span class="text-xs font-extrabold text-primary">{{ session.get('user_name', 'User') }}</span>
+                </div>
+                <button onclick="fetch('/api/logout').then(() => window.location.href='/login')" class="p-2 hover:bg-red-50 text-red-600 rounded-full transition-all">
+                    <span class="material-symbols-outlined text-lg">logout</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 flex flex-col max-w-4xl mx-auto w-full px-6 overflow-hidden">
+            <div class="py-10">
+                <h2 class="font-headline text-4xl font-extrabold text-primary tracking-tighter leading-tight mb-2">How can I help your field today?</h2>
+                <p class="text-secondary font-medium">Your digital agronomist is online. Ask about crops, weather, or pest management.</p>
+            </div>
+
+            <div id="chatMessages" class="flex-1 overflow-y-auto space-y-6 pb-10 scrollbar-hide">
+                <div class="flex gap-4 max-w-2xl">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary text-sm">smart_toy</span></div>
+                    <div class="glass-card p-6 rounded-2xl rounded-tl-none shadow-sm">
+                        <p class="leading-relaxed text-primary">Good morning! I've analyzed your latest sensor data. Ready to build a better harvest?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pb-10 pt-4 bg-surface">
+                 <div class="flex flex-wrap gap-2 mb-4">
+                    <button class="px-4 py-2 bg-primary/5 text-primary text-[10px] font-bold rounded-full hover:bg-primary/10">Recommend a crop</button>
+                    <button class="px-4 py-2 bg-primary/5 text-primary text-[10px] font-bold rounded-full hover:bg-primary/10">Yield forecast</button>
+                </div>
+                <div class="relative flex items-center gap-4">
+                    <div class="flex-1 relative flex items-center gap-2">
+                        <div class="relative flex-1">
+                            <input id="userInput" class="w-full bg-surface-variant border-none rounded-full py-5 pl-8 pr-24 focus:ring-2 focus:ring-primary/20 text-on-surface font-medium" placeholder="Ask TerraBot anything..." type="text"/>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                <button id="voiceBtn" class="w-8 h-8 rounded-full hover:bg-primary/10 text-primary flex items-center justify-center transition-all" title="Voice Input">
+                                    <span class="material-symbols-outlined text-[20px]">mic</span>
+                                </button>
+                                <button id="sendBtn" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center active:scale-90 transition-all font-bold">></button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 bg-surface-container-low p-2 rounded-full border border-primary/5 shadow-sm">
+                            <select id="langSelect" class="bg-transparent border-none text-[10px] font-bold text-primary focus:ring-0 cursor-pointer py-1 pr-8">
+                                <option value="en-US">English</option>
+                                <option value="hi-IN">Hindi</option>
+                                <option value="ne-NP">Nepali</option>
+                                <option value="te-IN">Telugu</option>
+                            </select>
+                            <button id="speakerToggle" class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center hover:bg-primary/10 transition-all" title="Toggle Voice Response">
+                                <span class="material-symbols-outlined text-[18px]">volume_up</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

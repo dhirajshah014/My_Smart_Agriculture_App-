@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Crop Recommendation | AgroScientific</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "tertiary-fixed": "#ffe171",
+                  "on-secondary": "#ffffff",
+                  "on-surface-variant": "#424841",
+                  "inverse-on-surface": "#ecf3e9",
+                  "on-primary-fixed-variant": "#2b4e30",
+                  "primary-fixed": "#c3edc3",
+                  "on-primary": "#ffffff",
+                  "surface": "#f4fbf2",
+                  "tertiary-container": "#caa900",
+                  "surface-container-lowest": "#ffffff",
+                  "surface-container": "#e9f0e6",
+                  "on-background": "#171d17",
+                  "inverse-primary": "#a8d1a9",
+                  "surface-tint": "#426746",
+                  "on-secondary-container": "#56695b",
+                  "surface-dim": "#d5dcd3",
+                  "on-tertiary": "#ffffff",
+                  "inverse-surface": "#2b322c",
+                  "on-secondary-fixed-variant": "#384b3f",
+                  "on-secondary-fixed": "#0d1f15",
+                  "error-container": "#ffdad6",
+                  "surface-container-high": "#e3eae1",
+                  "secondary": "#506356",
+                  "on-tertiary-container": "#4c3e00",
+                  "secondary-container": "#d2e8d7",
+                  "surface-bright": "#f4fbf2",
+                  "on-primary-container": "#9cc49d",
+                  "error": "#ba1a1a",
+                  "on-tertiary-fixed": "#221b00",
+                  "on-surface": "#171d17",
+                  "background": "#f4fbf2",
+                  "secondary-fixed-dim": "#b7ccbc",
+                  "primary-fixed-dim": "#a8d1a9",
+                  "on-tertiary-fixed-variant": "#554600",
+                  "primary": "#173b1e",
+                  "secondary-fixed": "#d2e8d7",
+                  "tertiary": "#705d00",
+                  "on-error": "#ffffff",
+                  "surface-variant": "#dde4db",
+                  "on-error-container": "#93000a",
+                  "primary-container": "#2e5233",
+                  "outline": "#727970",
+                  "tertiary-fixed-dim": "#e9c400",
+                  "surface-container-highest": "#dde4db"
+                },
+                fontFamily: {
+                  "headline": ["Manrope"],
+                  "body": ["Inter"],
+                  "label": ["Inter"]
+                },
+              },
+            },
+          }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen">
+    <!-- TopAppBar -->
+    <header class="w-full sticky top-0 z-40 bg-[#f4fbf2] flex border-b border-primary/5 shadow-sm justify-between items-center px-8 py-4">
+        <div class="flex items-center gap-8">
+            <span class="text-2xl font-headline font-extrabold text-[#173b1e] -tracking-tight uppercase">AgroScientific</span>
+            <nav class="hidden lg:flex gap-8">
+                <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/dashboard">Home</a>
+                <a class="text-primary border-b-2 border-primary pb-1 text-sm font-bold" href="/predict">Crop Prediction</a>
+                <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/yield">Yield Prediction</a>
+                <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/disease">Disease Detection</a>
+                <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/assistant">Chatbot</a>
+                <a class="text-zinc-500 hover:text-primary transition-all text-sm font-medium" href="/advisory">Farmer Advisory</a>
+            </nav>
+        </div>
+            <div class="flex items-center gap-4 bg-primary/5 px-4 py-2 rounded-full border border-primary/10">
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary/60">Logged in as</span>
+                    <span class="text-xs font-extrabold text-primary">{{ session.get('user_name', 'User') }}</span>
+                </div>
+                <button onclick="fetch('/api/logout').then(() => window.location.href='/login')" class="p-2 hover:bg-red-50 text-red-600 rounded-full transition-all">
+                    <span class="material-symbols-outlined text-lg">logout</span>
+                </button>
+            </div>
+    </header>
+
+    <!-- SideNavBar -->
+    <aside class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-[#eff6ec] border-r border-[#173b1e]/15 z-50 pt-20">
+        <div class="flex flex-col gap-2 p-6">
+             <div class="mb-6 flex items-center gap-3">
+                <div class="p-2 bg-primary rounded-xl">
+                    <span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">psychology</span>
+                </div>
+                <div>
+                    <h2 class="font-headline font-bold text-[#173b1e]">Agronomist AI</h2>
+                    <p class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Scientific Precision</p>
+                </div>
+            </div>
+            <a class="flex items-center gap-3 p-3 text-zinc-600 hover:bg-[#dde4db]/50 transition-all rounded-lg" href="/dashboard">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm font-medium">Home</span>
+            </a>
+            <a class="flex items-center gap-3 p-3 bg-[#dde4db] text-[#173b1e] rounded-lg font-bold" href="/predict">
+                <span class="material-symbols-outlined">psychology</span>
+                <span class="text-sm font-medium">Crop Prediction</span>
+            </a>
+            <a class="flex items-center gap-3 p-3 text-zinc-600 hover:bg-[#dde4db]/50 transition-all rounded-lg" href="/yield">
+                <span class="material-symbols-outlined">bar_chart</span>
+                <span class="text-sm font-medium">Yield Prediction</span>
+            </a>
+            <a class="flex items-center gap-3 p-3 text-zinc-600 hover:bg-[#dde4db]/50 transition-all rounded-lg" href="/disease">
+                <span class="material-symbols-outlined">center_focus_weak</span>
+                <span class="text-sm font-medium">Disease Detection</span>
+            </a>
+            <a class="flex items-center gap-3 p-3 text-zinc-600 hover:bg-[#dde4db]/50 transition-all rounded-lg" href="/advisory">
+                <span class="material-symbols-outlined">psychology</span>
+                <span class="text-sm font-medium">Farmer Advisory</span>
+            </a>
+            <a class="flex items-center gap-3 p-3 text-zinc-600 hover:bg-[#dde4db]/50 transition-all rounded-lg" href="/assistant">
+                <span class="material-symbols-outlined">chat_bubble</span>
+                <span class="text-sm font-medium">Chatbot</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="md:ml-64 p-8">
+        <div class="max-w-6xl mx-auto">
+            <header class="mb-12">
+                <span class="text-tertiary font-label text-xs font-bold uppercase tracking-widest bg-tertiary-fixed/30 px-3 py-1 rounded-full">Environmental Analysis</span>
+                <h1 class="text-4xl font-headline font-extrabold text-primary mt-4 tracking-tight">Recommendation Engine</h1>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Inputs -->
+                <section class="lg:col-span-7 space-y-6">
+                    <div class="bg-surface-container-low p-8 rounded-xl shadow-sm">
+                        <h3 class="font-headline font-bold text-lg mb-6 text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined">analytics</span> Soil Profile
+                        </h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Nitrogen (N)</label>
+                                <input id="n_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="mg/kg" type="number" value="50"/>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Phosphorous (P)</label>
+                                <input id="p_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="mg/kg" type="number" value="50"/>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Potassium (K)</label>
+                                <input id="k_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="mg/kg" type="number" value="50"/>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Soil pH</label>
+                                <input id="ph_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="0-14" step="0.1" type="number" value="6.5"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface-container-low p-8 rounded-xl shadow-sm">
+                        <h3 class="font-headline font-bold text-lg mb-6 text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined">wb_sunny</span> Atmosphere
+                        </h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Temperature (°C)</label>
+                                <input id="temp_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="25" type="number" value="25"/>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Rainfall (mm)</label>
+                                <input id="rain_val" class="bg-surface-variant border-none rounded-lg p-3 focus:ring-2 focus:ring-primary" placeholder="100" type="number" value="100"/>
+                            </div>
+                            <div class="hidden">
+                                <input id="hum_val" type="hidden" value="80"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button id="predictBtn" type="button" class="flex-1 bg-primary text-white py-4 rounded-full font-headline font-bold text-lg flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
+                            Run Analysis <span class="material-symbols-outlined">science</span>
+                        </button>
+                        <button id="voiceBtn" class="p-4 aspect-square bg-surface-variant rounded-full text-primary hover:bg-surface-container-highest transition-all relative">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Results -->
+                <section class="lg:col-span-5 space-y-6">
+                    <div id="resultCard" class="bg-white rounded-2xl overflow-hidden shadow-xl hidden">
+                        <div class="relative h-48 bg-primary/10 flex items-center justify-center p-8">
+                             <div class="text-center">
+                                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1">Recommended Crop</p>
+                                <h2 id="cropResult" class="text-4xl font-headline font-extrabold text-primary">--</h2>
+                             </div>
+                        </div>
+                        <div class="p-8">
+                            <h4 class="font-headline font-bold text-primary mb-2">Scientific Commentary</h4>
+                            <p id="cropReason" class="text-sm text-zinc-600 leading-relaxed mb-6">Based on your chemical profile and micro-climate inputs, the model has identified a high-precision match.</p>
+                            <div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl">
+                                <span class="material-symbols-outlined text-primary text-3xl">verified</span>
+                                <div>
+                                    <p class="text-[10px] font-bold text-zinc-500 uppercase">Match Accuracy</p>
+                                    <p class="font-bold text-primary tracking-tight">HIGH PRECISION (98.2%)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Price Prediction Section -->
+                <section class="lg:col-span-12 mt-12 mb-20">
+                    <div class="bg-white rounded-3xl p-10 shadow-2xl border border-primary/5">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                            <div>
+                                <h2 class="font-headline text-3xl font-extrabold text-primary tracking-tight mb-2">Crop Price Prediction System</h2>
+                                <p class="text-secondary font-medium italic">Empowering decisions with historical trends & future forecasts.</p>
+                            </div>
+                            <div class="flex items-center gap-3 bg-primary/5 px-6 py-3 rounded-2xl border border-primary/10">
+                                <span class="material-symbols-outlined text-primary">trending_up</span>
+                                <span class="text-sm font-bold text-primary uppercase tracking-widest">Market Insights AI</span>
+                            </div>
+                        </div>
+
+                        <div class="grid lg:grid-cols-12 gap-10">
+                            <!-- Inputs -->
+                            <div class="lg:col-span-4 space-y-6">
+                                <div class="bg-surface-container-low p-8 rounded-2xl shadow-sm space-y-6">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Select Crop</label>
+                                        <select id="priceCrop" class="bg-surface-variant border-none rounded-xl p-4 focus:ring-2 focus:ring-primary font-bold text-primary">
+                                            <option value="rice">Rice</option>
+                                            <option value="maize">Maize</option>
+                                            <option value="wheat">Wheat</option>
+                                            <option value="cotton">Cotton</option>
+                                            <option value="sugarcane">Sugarcane</option>
+                                            <option value="jute">Jute</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Days Ahead</label>
+                                        <input id="daysAhead" class="bg-surface-variant border-none rounded-xl p-4 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="7" min="1" max="30"/>
+                                    </div>
+                                    <button id="pricePredictBtn" class="w-full bg-primary text-white py-4 rounded-xl font-headline font-bold flex items-center justify-center gap-3 hover:shadow-lg active:scale-95 transition-all">
+                                        Estimate Price <span class="material-symbols-outlined text-lg">payments</span>
+                                    </button>
+                                </div>
+
+                                <!-- Result Card -->
+                                <div id="priceResultCard" class="bg-[#173b1e] p-8 rounded-2xl text-white shadow-xl hidden animate-in fade-in zoom-in duration-500">
+                                    <div class="flex justify-between items-start mb-6">
+                                        <div>
+                                            <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">Forecast Price</p>
+                                            <div class="flex items-baseline gap-1">
+                                                <span class="text-xl font-bold opacity-70">₹</span>
+                                                <h3 id="predictedPriceVal" class="text-4xl font-headline font-extrabold tracking-tighter">--</h3>
+                                            </div>
+                                        </div>
+                                        <div class="p-2 bg-white/10 rounded-lg">
+                                            <span class="material-symbols-outlined">analytics</span>
+                                        </div>
+                                    </div>
+                                    <div id="priceAdviceBox" class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="material-symbols-outlined text-sm text-yellow-400">info</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-widest">Recommendation</span>
+                                        </div>
+                                        <p id="priceAdvice" class="text-xs leading-relaxed opacity-90">Analyzing trends...</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visualization -->
+                            <div class="lg:col-span-8 bg-surface-container-low rounded-3xl p-1 shadow-sm h-[450px] relative overflow-hidden">
+                                <div id="priceChartLoader" class="absolute inset-0 flex flex-col items-center justify-center bg-surface-container-low/80 backdrop-blur-sm z-10 hidden">
+                                    <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Computing Analytics</p>
+                                </div>
+                                <div id="priceTrendGraph" class="w-full h-full"></div>
+                                <div id="noDataPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-400 p-12 text-center">
+                                    <div class="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+                                        <span class="material-symbols-outlined text-4xl">timeline</span>
+                                    </div>
+                                    <h4 class="font-headline font-bold text-zinc-800 mb-2">Market Data Ready</h4>
+                                    <p class="text-sm max-w-xs">Run a prediction to visualize historical data and future price projections.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
