@@ -70,7 +70,7 @@ def get_weather(city: str):
         return {"error": str(e)}
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash",
+    model_name="gemini-flash-latest",
     tools=[get_weather],
     system_instruction="You are TerraBot, a friendly AI assistant with access to real-time weather data. Be helpful, professional, and respond in the native script (हिन्दी, नेपाली, తెలుగు, or English)."
 )
@@ -342,27 +342,43 @@ def chatbot():
         return jsonify({'response': "I didn't catch that. Could you please rephrase?"})
     
     def generate():
-        try:
-            # SDK Limitation: We cannot use stream=True with enable_automatic_function_calling=True
-            # To keep it "instant", we skip auto-calling for the streaming interface
-            chat = model.start_chat(enable_automatic_function_calling=False)
-            
-            instruction = f"IMPORTANT: RESPOND ONLY IN {clean_lang.upper()} USING {clean_lang.upper()} NATIVE SCRIPT. DO NOT USE ENGLISH ALPHABETS FOR NATIVE WORDS."
-            full_prompt = f"{instruction}\n\nUser Message: {user_msg}"
-            
-            response = chat.send_message(full_prompt, stream=True)
-            for chunk in response:
-                if chunk.text:
-                    yield chunk.text
-        except Exception as e:
-            print(f"Gemini Streaming Error: {e}")
-            fallbacks = {
-                "Hindi": "मैं वर्तमान में स्थानीय पावर-से-विंग मोड में हूं क्योंकि मेरे क्लाउड दिमाग की दैनिक सीमा समाप्त हो गई है। मैं आज आपके खेत में आपकी कैसे मदद कर सकता हूं?",
-                "Nepali": "म अहिले स्थानीय पावर-सेभीङ मोडमा छु किनभने मेरो क्लाउड दिमागको दैनिक सीमा सकिएको छ। म आज तपाईंको खेतमा कसरी मदत गर्न सक्छु?",
-                "Telugu": "నా క్లౌడ్ మెదడు రోజువారీ పరిమితికి చేరుకున్నందున నేను ప్రస్తుతం లోకల్ పవర్-సేవింగ్ మోడ్‌లో ఉన్నాను. ఈరోజు మీ ఫామ్‌లో నేను మీకు ఎలా సహాయం చేయగలను?",
-                "English": "I'm currently in Local Power-Saving mode because my cloud brain has reached its daily limit. How can I help you with your farm today?"
-            }
-            yield fallbacks.get(clean_lang, fallbacks["English"])
+        fallback_models = ["gemini-2.5-flash-lite", "gemini-3.1-flash-lite-preview", "gemma-3-4b-it", "gemini-flash-latest", "gemini-pro-latest"]
+        last_error = None
+        
+        for model_name in fallback_models:
+            try:
+                # Create a local scoped model just for this request
+                # Exclude tools for gemma since they might have varied support
+                kwargs = {
+                    "model_name": model_name,
+                    "system_instruction": "You are TerraBot, a friendly AI assistant with access to real-time weather data. Be helpful, professional, and respond in the native script (हिन्दी, नेपाली, తెలుగు, or English)."
+                }
+                if "gemma" not in model_name:
+                    kwargs["tools"] = [get_weather]
+                    
+                local_model = genai.GenerativeModel(**kwargs)
+                
+                chat = local_model.start_chat(enable_automatic_function_calling=False)
+                instruction = f"IMPORTANT: RESPOND ONLY IN {clean_lang.upper()} USING {clean_lang.upper()} NATIVE SCRIPT. DO NOT USE ENGLISH ALPHABETS FOR NATIVE WORDS."
+                full_prompt = f"{instruction}\n\nUser Message: {user_msg}"
+                
+                response = chat.send_message(full_prompt, stream=True)
+                for chunk in response:
+                    if chunk.text:
+                        yield chunk.text
+                return # Exit the function successfully
+            except Exception as e:
+                print(f"Gemini Streaming Error ({model_name}): {e}")
+                last_error = e
+        
+        print(f"Gemini Streaming Error (All Models Exhausted): {last_error}")
+        fallbacks = {
+            "Hindi": "मैं वर्तमान में स्थानीय पावर-से-विंग मोड में हूं क्योंकि मेरे क्लाउड दिमाग की दैनिक सीमा समाप्त हो गई है। मैं आज आपके खेत में आपकी कैसे मदद कर सकता हूं?",
+            "Nepali": "म अहिले स्थानीय पावर-सेभीङ मोडमा छु किनभने मेरो क्लाउड दिमागको दैनिक सीमा सकिएको छ। म आज तपाईंको खेतमा कसरी मदत गर्न सक्छु?",
+            "Telugu": "నా క్లౌడ్ మెదడు రోజువారీ పరిమితికి చేరుకున్నందున నేను ప్రస్తుతం లోకల్ పవర్-సేవింగ్ మోడ్‌లో ఉన్నాను. ఈరోజు మీ ఫామ్‌లో నేను మీకు ఎలా సహాయం చేయగలను?",
+            "English": "I'm currently in Local Power-Saving mode because my cloud brain has reached its daily limit. How can I help you with your farm today?"
+        }
+        yield fallbacks.get(clean_lang, fallbacks["English"])
 
     return Response(generate(), mimetype='text/plain')
 
@@ -509,33 +525,44 @@ def detect_disease():
         Do not include markdown formatting or any other text.
         """
         
-        # Use Gemini 2.5 Flash for best vision performance
-        vision_model = genai.GenerativeModel('gemini-2.5-flash')
+        fallback_models = ["gemini-3.1-flash-image-preview", "gemini-2.5-flash-image", "gemini-flash-latest"]
+        last_error = None
         
-        # Call Gemini with the image and prompt
-        response = vision_model.generate_content([
-            prompt,
-            {'mime_type': mime_type, 'data': img_data}
-        ])
-        
-        # Robust response parsing
-        content = response.text.strip()
-        # Remove common AI prefixes
-        if "```json" in content:
-            content = content.split("```json")[1].split("```")[0].strip()
-        elif "```" in content:
-            content = content.split("```")[1].split("```")[0].strip()
-            
-        import json
-        result = json.loads(content)
-        
-        # Basic validation of keys
-        required_keys = ["status", "name", "description", "medicine", "prevention", "confidence"]
-        for key in required_keys:
-            if key not in result:
-                raise ValueError(f"Missing key: {key}")
+        for model_name in fallback_models:
+            try:
+                # Use localized fallback for best vision performance
+                vision_model = genai.GenerativeModel(model_name)
                 
-        return jsonify(result)
+                # Call Gemini with the image and prompt
+                response = vision_model.generate_content([
+                    prompt,
+                    {'mime_type': mime_type, 'data': img_data}
+                ])
+                
+                # Robust response parsing
+                content = response.text.strip()
+                # Remove common AI prefixes
+                if "```json" in content:
+                    content = content.split("```json")[1].split("```")[0].strip()
+                elif "```" in content:
+                    content = content.split("```")[1].split("```")[0].strip()
+                    
+                import json
+                result = json.loads(content)
+                
+                # Basic validation of keys
+                required_keys = ["status", "name", "description", "medicine", "prevention", "confidence"]
+                for key in required_keys:
+                    if key not in result:
+                        raise ValueError(f"Missing key: {key}")
+                        
+                return jsonify(result)
+            except Exception as e:
+                print(f"Vision iteration failed for {model_name}: {e}")
+                last_error = e
+
+        # If all models failed
+        raise last_error
 
     except Exception as e:
         import traceback
