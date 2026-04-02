@@ -360,7 +360,7 @@ def chatbot():
                 instruction = f"IMPORTANT: RESPOND ONLY IN {clean_lang.upper()} USING {clean_lang.upper()} NATIVE SCRIPT. DO NOT USE ENGLISH ALPHABETS FOR NATIVE WORDS."
                 full_prompt = f"{instruction}\n\nUser Message: {user_msg}"
                 
-                response = chat.send_message(full_prompt, stream=True)
+                response = chat.send_message(full_prompt, stream=True, request_options={"timeout": 10.0})
                 for chunk in response:
                     if chunk.text:
                         yield chunk.text
