@@ -21,9 +21,9 @@ This document provides a highly detailed, "pin-to-pin" breakdown of all implemen
 1.  **Crop Prediction System**: Uses an optimized **Random Forest Classifier** to recommend the most profitable crop based on Nitrogen (N), Phosphorus (P), Potassium (K), Temperature, Humidity, pH, and Rainfall.
 2.  **Yield Forecasting**: A regression-based model that predicts harvest weight (tons/hectare).
     - **Regression Vector Analysis**: Provides interactive **Plotly.js** visualizations comparing regional trends.
-3.  **Disease Detection**: An image-recognition module (powered by **ResNet50**) that allows farmers to upload photos of plants for instant pathological analysis.
+3.  **Disease Detection**: An image-recognition module powered by a **Multi-Model Gemini Vision Array** that allows farmers to upload photos of plants for instant pathological analysis.
 4.  **Marketplace Interface**: A unified platform for buying and selling agricultural assets, integrated with session-based identity.
-5.  **AI Assistant (TerraBot)**: A generative AI chatbot (Gemini-powered) capable of answering complex agronomic queries and interpreting field data in real-time.
+5.  **AI Assistant (TerraBot)**: A highly fault-tolerant generative AI chatbot (using Gemini fallback loops: `flash-latest`, `flash-lite`, `gemma-it`) capable of answering complex agronomic queries and interpreting field data in real-time without free-tier quota exhaustion.
 
 ### B. Real-Time Telemetry (Main View)
 - **Voice-Activated Guidance**: A hero interface allowing voice queries like *"Hey Terra, what is my optimal nitrogen level?"*
