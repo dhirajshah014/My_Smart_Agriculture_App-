@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, render_template, session, redirect, url_for, request, abort
 from flask_socketio import SocketIO, emit
 from routes.api import api
