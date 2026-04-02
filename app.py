@@ -1,6 +1,3 @@
-import eventlet
-eventlet.monkey_patch()
-
 from flask import Flask, render_template, session, redirect, url_for, request, abort
 from flask_socketio import SocketIO, emit
 from routes.api import api
@@ -9,7 +6,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'agri_secure_key_2026' # For secure sessions
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 register_live_handlers(socketio)
 app.register_blueprint(api, url_prefix='/api')
 
