@@ -343,7 +343,7 @@ def chatbot():
     
     def generate():
         yield " " # Keep proxy connection alive instantly
-        fallback_models = ["gemini-flash-latest", "gemini-2.5-flash-lite"]
+        fallback_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest", "gemini-2.5-flash-lite"]
         last_error = None
         has_yielded_real_text = False
         
@@ -541,7 +541,7 @@ def detect_disease():
         Do not include markdown formatting or any other text.
         """
         
-        fallback_models = ["gemini-3.1-flash-image-preview", "gemini-2.5-flash-image", "gemini-flash-latest"]
+        fallback_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest", "gemini-3.1-flash-image-preview", "gemini-2.5-flash-image"]
         last_error = None
         
         for model_name in fallback_models:
