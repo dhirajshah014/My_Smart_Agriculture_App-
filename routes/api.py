@@ -342,19 +342,17 @@ def chatbot():
         return jsonify({'response': "I didn't catch that. Could you please rephrase?"})
     
     def generate():
-        fallback_models = ["gemini-2.5-flash-lite", "gemini-3.1-flash-lite-preview", "gemma-3-4b-it", "gemini-flash-latest", "gemini-pro-latest"]
+        yield " " # Keep proxy connection alive instantly
+        fallback_models = ["gemini-flash-latest", "gemini-2.5-flash-lite"]
         last_error = None
         
         for model_name in fallback_models:
             try:
-                # Create a local scoped model just for this request
-                # Exclude tools for gemma since they might have varied support
                 kwargs = {
                     "model_name": model_name,
                     "system_instruction": "You are TerraBot, a friendly AI assistant with access to real-time weather data. Be helpful, professional, and respond in the native script (हिन्दी, नेपाली, తెలుగు, or English)."
                 }
-                if "gemma" not in model_name:
-                    kwargs["tools"] = [get_weather]
+                kwargs["tools"] = [get_weather]
                     
                 local_model = genai.GenerativeModel(**kwargs)
                 
