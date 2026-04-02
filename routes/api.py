@@ -345,6 +345,7 @@ def chatbot():
         yield " " # Keep proxy connection alive instantly
         fallback_models = ["gemini-flash-latest", "gemini-2.5-flash-lite"]
         last_error = None
+        has_yielded_real_text = False
         
         for model_name in fallback_models:
             try:
@@ -360,14 +361,31 @@ def chatbot():
                 instruction = f"IMPORTANT: RESPOND ONLY IN {clean_lang.upper()} USING {clean_lang.upper()} NATIVE SCRIPT. DO NOT USE ENGLISH ALPHABETS FOR NATIVE WORDS."
                 full_prompt = f"{instruction}\n\nUser Message: {user_msg}"
                 
-                response = chat.send_message(full_prompt, stream=True, request_options={"timeout": 10.0})
+                response = chat.send_message(full_prompt, stream=True, request_options={"timeout": 15.0})
                 for chunk in response:
-                    if chunk.text:
-                        yield chunk.text
-                return # Exit the function successfully
+                    # In case of safety filters or blocks, chunk.text might be empty
+                    try:
+                        if chunk.text:
+                            has_yielded_real_text = True
+                            yield chunk.text
+                    except Exception:
+                        continue
+                
+                if has_yielded_real_text:
+                    return # Exit successfully if we got real output
             except Exception as e:
                 print(f"Gemini Streaming Error ({model_name}): {e}")
                 last_error = e
+        
+        # If we got here, it means NO real text was ever yielded (safety block or quota)
+        print(f"Gemini Streaming Error (Final Fallback): {last_error}")
+        fallbacks = {
+            "Hindi": "क्षमा करें, मैं वर्तमान में आपके अनुरोध को संसाधित नहीं कर सकता। कृपया थोड़ी देर बाद फिर से प्रयास करें।",
+            "Nepali": "क्षमा गर्नुहोस्, म अहिले तपाईंको अनुरोध प्रशोधन गर्न सक्दिन। कृपया केही समय पछि पुन: प्रयास गर्नुहोस्।",
+            "Telugu": "క్షమించండి, నేను ప్రస్తుతం మీ అభ్యర్థనను ప్రాసెస్ చేయలేను. దయచేసి కాసేపటి తర్వాత మళ్ళీ ప్రయత్నించండి.",
+            "English": "I'm currently experiencing high traffic or safety filters. Please try again with a different question or wait a moment."
+        }
+        yield fallbacks.get(clean_lang, fallbacks["English"])
         
         print(f"Gemini Streaming Error (All Models Exhausted): {last_error}")
         fallbacks = {
